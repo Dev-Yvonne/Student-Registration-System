@@ -42,6 +42,98 @@ body {
 }
 
 /* ============================================
+   Login Page Styles
+   ============================================ */
+
+.login-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 20px;
+}
+
+.login-box {
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    padding: 50px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.login-icon {
+    margin-bottom: 30px;
+}
+
+.login-student-icon {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    border-radius: 50%;
+    background: rgba(102, 126, 234, 0.15);
+    padding: 15px;
+    animation: float 3s ease-in-out infinite;
+}
+
+.login-box h1 {
+    font-size: 1.8rem;
+    color: var(--dark-text);
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.login-box p {
+    font-size: 0.95rem;
+    color: var(--secondary-color);
+    margin-bottom: 30px;
+    font-weight: 500;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.login-form .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    text-align: left;
+}
+
+.login-form .form-group label {
+    font-weight: 600;
+    color: var(--dark-text);
+    font-size: 0.95rem;
+}
+
+.login-form .form-group input {
+    padding: 12px 15px;
+    border: 2px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: var(--transition);
+    background: var(--white);
+}
+
+.login-form .form-group input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+.btn-login {
+    padding: 12px 24px;
+    font-size: 1rem;
+    margin-top: 10px;
+}
+
+/* ============================================
    Container & Layout
    ============================================ */
 
@@ -125,6 +217,9 @@ body {
     object-fit: contain;
     filter: brightness(1.1);
     animation: float 3s ease-in-out infinite;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 10px;
 }
 
 @keyframes float {
@@ -150,6 +245,12 @@ body {
     font-size: 1.1rem;
     opacity: 0.95;
     font-weight: 300;
+}
+
+.btn-logout {
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    margin: 0;
 }
 
 /* ============================================

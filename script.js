@@ -4,8 +4,15 @@
 
 // Key for localStorage
 const STORAGE_KEY = 'students_data';
+const ADMIN_EMAIL = 'eshitemiyvonne@gmail.com';
+const ADMIN_PASSWORD = 'Admin@2026';
+const AUTH_KEY = 'admin_authenticated';
 
 // Get DOM Elements
+const loginContainer = document.getElementById('loginContainer');
+const adminContainer = document.getElementById('adminContainer');
+const loginForm = document.getElementById('loginForm');
+const logoutBtn = document.getElementById('logoutBtn');
 const registrationForm = document.getElementById('registrationForm');
 const messageContainer = document.getElementById('messageContainer');
 const tableBody = document.getElementById('tableBody');
@@ -26,28 +33,110 @@ let currentDeleteIndex = null;
 // Initialize App
 // ============================================
 document.addEventListener('DOMContentLoaded', function() {
-    loadStudents();
+    checkAuthentication();
     setupEventListeners();
     setupNavigation();
+    loadStudents();
 });
+
+// ============================================
+// Authentication Check
+// ============================================
+function checkAuthentication() {
+    const isAuthenticated = sessionStorage.getItem(AUTH_KEY);
+    
+    if (isAuthenticated) {
+        showAdminDashboard();
+    } else {
+        showLoginPage();
+    }
+}
+
+// ============================================
+// Show Login Page
+// ============================================
+function showLoginPage() {
+    loginContainer.style.display = 'flex';
+    adminContainer.style.display = 'none';
+    loginForm.addEventListener('submit', handleLogin);
+}
+
+// ============================================
+// Show Admin Dashboard
+// ============================================
+function showAdminDashboard() {
+    loginContainer.style.display = 'none';
+    adminContainer.style.display = 'flex';
+    logoutBtn.addEventListener('click', handleLogout);
+}
+
+// ============================================
+// Handle Login
+// ============================================
+function handleLogin(e) {
+    e.preventDefault();
+    
+    const email = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value;
+    const loginMessage = document.getElementById('loginMessage');
+    
+    // Clear previous errors
+    document.getElementById('usernameError').textContent = '';
+    document.getElementById('passwordError').textContent = '';
+    loginMessage.innerHTML = '';
+    
+    // Validate credentials
+    if (email !== ADMIN_EMAIL) {
+        document.getElementById('usernameError').textContent = 'Invalid email';
+        return;
+    }
+    
+    if (password !== ADMIN_PASSWORD) {
+        document.getElementById('passwordError').textContent = 'Invalid password';
+        return;
+    }
+    
+    // Authenticate user
+    sessionStorage.setItem(AUTH_KEY, 'true');
+    showAdminDashboard();
+    loginForm.reset();
+}
+
+// ============================================
+// Handle Logout
+// ============================================
+function handleLogout() {
+    sessionStorage.removeItem(AUTH_KEY);
+    loginContainer.style.display = 'flex';
+    adminContainer.style.display = 'none';
+    loginForm.reset();
+    document.getElementById('usernameError').textContent = '';
+    document.getElementById('passwordError').textContent = '';
+}
 
 // ============================================
 // Event Listeners Setup
 // ============================================
 function setupEventListeners() {
     // Form submission
-    registrationForm.addEventListener('submit', handleFormSubmit);
+    if (registrationForm) {
+        registrationForm.addEventListener('submit', handleFormSubmit);
+    }
 
     // Modal close buttons
-    closeBtn.addEventListener('click', closeEditModal);
-    cancelEditBtn.addEventListener('click', closeEditModal);
-    cancelDeleteBtn.addEventListener('click', closeDeleteModal);
+    if (closeBtn) closeBtn.addEventListener('click', closeEditModal);
+    if (cancelEditBtn) cancelEditBtn.addEventListener('click', closeEditModal);
+    if (cancelDeleteBtn) cancelDeleteBtn.addEventListener('click', closeDeleteModal);
 
     // Edit form submission
-    editForm.addEventListener('submit', handleEditSubmit);
+    if (editForm) {
+        editForm.addEventListener('submit', handleEditSubmit);
+    }
 
     // Delete confirmation
-    confirmDeleteBtn.addEventListener('click', confirmDelete);
+    if (confirmDeleteBtn) {
+        confirmDeleteBtn.addEventListener('click', confirmDelete);
+    }
 
     // Close modal when clicking outside
     window.addEventListener('click', function(event) {
@@ -58,6 +147,7 @@ function setupEventListeners() {
             closeDeleteModal();
         }
     });
+
 }
 
 // ============================================

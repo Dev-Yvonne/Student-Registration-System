@@ -64,6 +64,34 @@ body {
     text-align: center;
 }
 
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.header-icon {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    filter: brightness(1.1);
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.header-text {
+    flex: 1;
+}
+
 .header h1 {
     font-size: 2.5rem;
     margin-bottom: 10px;
@@ -215,7 +243,12 @@ body {
 .message-container {
     margin-bottom: 20px;
     min-height: 0;
-    display: none;
+}
+
+.message-container .message {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .message {
@@ -244,6 +277,18 @@ body {
     background: #fff3cd;
     color: #856404;
     border-left: 4px solid var(--warning-color);
+}
+
+.close-message {
+    cursor: pointer;
+    font-size: 1.2rem;
+    font-weight: bold;
+    opacity: 0.7;
+    transition: var(--transition);
+}
+
+.close-message:hover {
+    opacity: 1;
 }
 
 @keyframes slideIn {
@@ -315,6 +360,23 @@ body {
 
 .btn:active {
     transform: translateY(0);
+}
+
+.btn-sm {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    letter-spacing: 0.3px;
+}
+
+.btn-info {
+    background: #17a2b8;
+    color: var(--white);
+}
+
+.btn-info:hover {
+    background: #138496;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(23, 162, 184, 0.3);
 }
 
 /* ============================================

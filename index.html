@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <h1>Student Registration System</h1>
+            <p>Register and manage student information efficiently</p>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Form Section -->
+            <section class="form-section">
+                <h2>Register New Student</h2>
+                
+                <!-- Message Container -->
+                <div id="messageContainer" class="message-container"></div>
+
+                <!-- Registration Form -->
+                <form id="registrationForm" class="registration-form">
+                    <!-- Full Name -->
+                    <div class="form-group">
+                        <label for="fullName">Full Name <span class="required">*</span></label>
+                        <input 
+                            type="text" 
+                            id="fullName" 
+                            name="fullName" 
+                            placeholder="Enter your full name"
+                            required
+                        >
+                        <span class="error-message" id="fullNameError"></span>
+                    </div>
+
+                    <!-- Registration Number -->
+                    <div class="form-group">
+                        <label for="registrationNumber">Registration Number <span class="required">*</span></label>
+                        <input 
+                            type="text" 
+                            id="registrationNumber" 
+                            name="registrationNumber" 
+                            placeholder="e.g., STU001"
+                            required
+                        >
+                        <span class="error-message" id="registrationNumberError"></span>
+                    </div>
+
+                    <!-- Email Address -->
+                    <div class="form-group">
+                        <label for="email">Email Address <span class="required">*</span></label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            placeholder="Enter your email"
+                            required
+                        >
+                        <span class="error-message" id="emailError"></span>
+                    </div>
+
+                    <!-- Phone Number -->
+                    <div class="form-group">
+                        <label for="phone">Phone Number <span class="required">*</span></label>
+                        <input 
+                            type="tel" 
+                            id="phone" 
+                            name="phone" 
+                            placeholder="Enter your 10-digit phone number"
+                            required
+                        >
+                        <span class="error-message" id="phoneError"></span>
+                    </div>
+
+                    <!-- Gender -->
+                    <div class="form-group">
+                        <label>Gender <span class="required">*</span></label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="gender" value="Male" required>
+                                <span>Male</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="gender" value="Female" required>
+                                <span>Female</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="gender" value="Other" required>
+                                <span>Other</span>
+                            </label>
+                        </div>
+                        <span class="error-message" id="genderError"></span>
+                    </div>
+
+                    <!-- Course / Program -->
+                    <div class="form-group">
+                        <label for="course">Course / Program <span class="required">*</span></label>
+                        <select id="course" name="course" required>
+                            <option value="">-- Select Course --</option>
+                            <option value="Computer Science">Computer Science</option>
+                            <option value="Information Technology">Information Technology</option>
+                            <option value="Business Administration">Business Administration</option>
+                            <option value="Engineering">Engineering</option>
+                            <option value="Medicine">Medicine</option>
+                            <option value="Law">Law</option>
+                            <option value="Arts">Arts</option>
+                            <option value="Science">Science</option>
+                        </select>
+                        <span class="error-message" id="courseError"></span>
+                    </div>
+
+                    <!-- Year of Study -->
+                    <div class="form-group">
+                        <label for="yearOfStudy">Year of Study <span class="required">*</span></label>
+                        <select id="yearOfStudy" name="yearOfStudy" required>
+                            <option value="">-- Select Year --</option>
+                            <option value="1st Year">1st Year</option>
+                            <option value="2nd Year">2nd Year</option>
+                            <option value="3rd Year">3rd Year</option>
+                            <option value="4th Year">4th Year</option>
+                            <option value="5th Year">5th Year</option>
+                        </select>
+                        <span class="error-message" id="yearOfStudyError"></span>
+                    </div>
+
+                    <!-- Date of Birth -->
+                    <div class="form-group">
+                        <label for="dateOfBirth">Date of Birth <span class="required">*</span></label>
+                        <input 
+                            type="date" 
+                            id="dateOfBirth" 
+                            name="dateOfBirth" 
+                            required
+                        >
+                        <span class="error-message" id="dateOfBirthError"></span>
+                    </div>
+
+                    <!-- Form Buttons -->
+                    <div class="form-buttons">
+                        <button type="submit" class="btn btn-primary">Register Student</button>
+                        <button type="reset" class="btn btn-secondary">Clear Form</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Students Table Section -->
+            <section class="table-section">
+                <h2>Registered Students</h2>
+                <div class="table-responsive">
+                    <table id="studentsTable" class="students-table">
+                        <thead>
+                            <tr>
+                                <th>Full Name</th>
+                                <th>Registration #</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Gender</th>
+                                <th>Course</th>
+                                <th>Year</th>
+                                <th>DOB</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                            <tr id="emptyRow" class="empty-row">
+                                <td colspan="9">No students registered yet. Fill the form above to add a student.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Edit Student Information</h2>
+            
+            <form id="editForm" class="registration-form">
+                <!-- Full Name -->
+                <div class="form-group">
+                    <label for="editFullName">Full Name <span class="required">*</span></label>
+                    <input 
+                        type="text" 
+                        id="editFullName" 
+                        name="fullName" 
+                        required
+                    >
+                    <span class="error-message" id="editFullNameError"></span>
+                </div>
+
+                <!-- Registration Number -->
+                <div class="form-group">
+                    <label for="editRegistrationNumber">Registration Number <span class="required">*</span></label>
+                    <input 
+                        type="text" 
+                        id="editRegistrationNumber" 
+                        name="registrationNumber" 
+                        required
+                    >
+                    <span class="error-message" id="editRegistrationNumberError"></span>
+                </div>
+
+                <!-- Email Address -->
+                <div class="form-group">
+                    <label for="editEmail">Email Address <span class="required">*</span></label>
+                    <input 
+                        type="email" 
+                        id="editEmail" 
+                        name="email" 
+                        required
+                    >
+                    <span class="error-message" id="editEmailError"></span>
+                </div>
+
+                <!-- Phone Number -->
+                <div class="form-group">
+                    <label for="editPhone">Phone Number <span class="required">*</span></label>
+                    <input 
+                        type="tel" 
+                        id="editPhone" 
+                        name="phone" 
+                        required
+                    >
+                    <span class="error-message" id="editPhoneError"></span>
+                </div>
+
+                <!-- Gender -->
+                <div class="form-group">
+                    <label>Gender <span class="required">*</span></label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="gender" value="Male" required>
+                            <span>Male</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="gender" value="Female" required>
+                            <span>Female</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="gender" value="Other" required>
+                            <span>Other</span>
+                        </label>
+                    </div>
+                    <span class="error-message" id="editGenderError"></span>
+                </div>
+
+                <!-- Course / Program -->
+                <div class="form-group">
+                    <label for="editCourse">Course / Program <span class="required">*</span></label>
+                    <select id="editCourse" name="course" required>
+                        <option value="">-- Select Course --</option>
+                        <option value="Computer Science">Computer Science</option>
+                        <option value="Information Technology">Information Technology</option>
+                        <option value="Business Administration">Business Administration</option>
+                        <option value="Engineering">Engineering</option>
+                        <option value="Medicine">Medicine</option>
+                        <option value="Law">Law</option>
+                        <option value="Arts">Arts</option>
+                        <option value="Science">Science</option>
+                    </select>
+                    <span class="error-message" id="editCourseError"></span>
+                </div>
+
+                <!-- Year of Study -->
+                <div class="form-group">
+                    <label for="editYearOfStudy">Year of Study <span class="required">*</span></label>
+                    <select id="editYearOfStudy" name="yearOfStudy" required>
+                        <option value="">-- Select Year --</option>
+                        <option value="1st Year">1st Year</option>
+                        <option value="2nd Year">2nd Year</option>
+                        <option value="3rd Year">3rd Year</option>
+                        <option value="4th Year">4th Year</option>
+                        <option value="5th Year">5th Year</option>
+                    </select>
+                    <span class="error-message" id="editYearOfStudyError"></span>
+                </div>
+
+                <!-- Date of Birth -->
+                <div class="form-group">
+                    <label for="editDateOfBirth">Date of Birth <span class="required">*</span></label>
+                    <input 
+                        type="date" 
+                        id="editDateOfBirth" 
+                        name="dateOfBirth" 
+                        required
+                    >
+                    <span class="error-message" id="editDateOfBirthError"></span>
+                </div>
+
+                <!-- Form Buttons -->
+                <div class="form-buttons">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <button type="button" class="btn btn-secondary" id="cancelEditBtn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content delete-modal-content">
+            <h2>Confirm Deletion</h2>
+            <p id="deleteMessage">Are you sure you want to delete this student's record?</p>
+            <div class="form-buttons">
+                <button id="confirmDeleteBtn" class="btn btn-danger">Delete</button>
+                <button id="cancelDeleteBtn" class="btn btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript File -->
+    <script src="script.js"></script>
+</body>
+</html>

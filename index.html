@@ -7,30 +7,42 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Main Container -->
-    <div class="container">
+    <!-- Admin Dashboard Container -->
+    <div class="admin-dashboard">
         <!-- Header Section -->
         <header class="header">
             <div class="header-content">
                 <img src="images/student icon.png" alt="Student Icon" class="header-icon">
                 <div class="header-text">
                     <h1>Student Registration System</h1>
-                    <p>Register and manage student information efficiently</p>
+                    <p>Admin Dashboard</p>
                 </div>
             </div>
         </header>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Form Section -->
-            <section class="form-section">
-                <h2>Register New Student</h2>
-                
-                <!-- Message Container -->
-                <div id="messageContainer" class="message-container"></div>
+        <!-- Dashboard Layout -->
+        <div class="dashboard-layout">
+            <!-- Sidebar Navigation -->
+            <aside class="sidebar">
+                <nav class="sidebar-nav">
+                    <ul>
+                        <li><a href="#registration" class="nav-link active" data-section="registration">Register Student</a></li>
+                        <li><a href="#dashboard" class="nav-link" data-section="dashboard">View Students</a></li>
+                    </ul>
+                </nav>
+            </aside>
 
-                <!-- Registration Form -->
-                <form id="registrationForm" class="registration-form">
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Form Section -->
+                <section id="registration" class="form-section">
+                    <h2>Register New Student</h2>
+                    
+                    <!-- Message Container -->
+                    <div id="messageContainer" class="message-container"></div>
+
+                    <!-- Registration Form -->
+                    <form id="registrationForm" class="registration-form">
                     <!-- Full Name -->
                     <div class="form-group">
                         <label for="fullName">Full Name <span class="required">*</span></label>
@@ -155,7 +167,7 @@
             </section>
 
             <!-- Students Table Section -->
-            <section class="table-section">
+            <section id="dashboard" class="table-section">
                 <h2>Registered Students</h2>
                 <div class="table-responsive">
                     <table id="studentsTable" class="students-table">
@@ -180,7 +192,8 @@
                     </table>
                 </div>
             </section>
-        </main>
+            </main>
+        </div>
     </div>
 
     <!-- Edit Modal -->

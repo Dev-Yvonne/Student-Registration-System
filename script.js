@@ -28,6 +28,7 @@ let currentDeleteIndex = null;
 document.addEventListener('DOMContentLoaded', function() {
     loadStudents();
     setupEventListeners();
+    setupNavigation();
 });
 
 // ============================================
@@ -57,6 +58,43 @@ function setupEventListeners() {
             closeDeleteModal();
         }
     });
+}
+
+// ============================================
+// Navigation Setup
+// ============================================
+function setupNavigation() {
+    const navLinks = document.querySelectorAll('.nav-link');
+    const registrationSection = document.getElementById('registration');
+    const dashboardSection = document.getElementById('dashboard');
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Remove active class from all links
+            navLinks.forEach(l => l.classList.remove('active'));
+            
+            // Add active class to clicked link
+            this.classList.add('active');
+            
+            // Hide all sections
+            registrationSection.style.display = 'none';
+            dashboardSection.style.display = 'none';
+            
+            // Show selected section
+            const section = this.getAttribute('data-section');
+            if (section === 'registration') {
+                registrationSection.style.display = 'block';
+            } else if (section === 'dashboard') {
+                dashboardSection.style.display = 'block';
+            }
+        });
+    });
+    
+    // Show registration section by default
+    registrationSection.style.display = 'block';
+    dashboardSection.style.display = 'none';
 }
 
 // ============================================

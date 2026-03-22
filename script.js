@@ -4,6 +4,7 @@
 
 // Key for localStorage
 const STORAGE_KEY = 'students_data';
+const FEES_KEY = 'fees_data';
 const ADMIN_EMAIL = 'eshitemiyvonne@gmail.com';
 const ADMIN_PASSWORD = 'Admin@2026';
 const AUTH_KEY = 'admin_authenticated';
@@ -24,6 +25,24 @@ const cancelEditBtn = document.getElementById('cancelEditBtn');
 const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
 const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
 const editForm = document.getElementById('editForm');
+
+// Fees DOM elements
+const feesForm = document.getElementById('feesForm');
+const feeStudent = document.getElementById('feeStudent');
+const tuitionInput = document.getElementById('tuition');
+const hostelInput = document.getElementById('hostel');
+const libraryInput = document.getElementById('library');
+const discountInput = document.getElementById('discount');
+const totalPayable = document.getElementById('totalPayable');
+const feesTableBody = document.getElementById('feesTableBody');
+const feesMessage = document.getElementById('feesMessage');
+// Invoice preview elements
+const invoiceModal = document.getElementById('invoiceModal');
+const invoicePreviewContent = document.getElementById('invoicePreviewContent');
+const downloadInvoiceBtn = document.getElementById('downloadInvoiceBtn');
+const printInvoiceBtn = document.getElementById('printInvoiceBtn');
+const closeInvoicePreviewBtn = document.getElementById('closeInvoicePreviewBtn');
+const closeInvoiceBtn = document.getElementById('closeInvoiceBtn');
 
 // Global variable to store the index of student being edited/deleted
 let currentEditIndex = null;
@@ -138,6 +157,20 @@ function setupEventListeners() {
         confirmDeleteBtn.addEventListener('click', confirmDelete);
     }
 
+    // Fees form listeners
+    if (feesForm) {
+        feesForm.addEventListener('submit', handleFeesSubmit);
+        [tuitionInput, hostelInput, libraryInput, discountInput].forEach(inp => {
+            if (inp) inp.addEventListener('input', calculateTotalPayable);
+        });
+    }
+
+    // Invoice preview listeners
+    if (downloadInvoiceBtn) downloadInvoiceBtn.addEventListener('click', downloadInvoiceFromPreview);
+    if (printInvoiceBtn) printInvoiceBtn.addEventListener('click', printInvoicePreview);
+    if (closeInvoicePreviewBtn) closeInvoicePreviewBtn.addEventListener('click', closeInvoiceModal);
+    if (closeInvoiceBtn) closeInvoiceBtn.addEventListener('click', closeInvoiceModal);
+
     // Close modal when clicking outside
     window.addEventListener('click', function(event) {
         if (event.target === editModal) {
@@ -157,6 +190,7 @@ function setupNavigation() {
     const navLinks = document.querySelectorAll('.nav-link');
     const registrationSection = document.getElementById('registration');
     const dashboardSection = document.getElementById('dashboard');
+    const feesSection = document.getElementById('fees');
 
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
@@ -168,16 +202,19 @@ function setupNavigation() {
             // Add active class to clicked link
             this.classList.add('active');
             
-            // Hide all sections
+            // Hide all known sections
             registrationSection.style.display = 'none';
             dashboardSection.style.display = 'none';
-            
+            if (feesSection) feesSection.style.display = 'none';
+
             // Show selected section
             const section = this.getAttribute('data-section');
             if (section === 'registration') {
                 registrationSection.style.display = 'block';
             } else if (section === 'dashboard') {
                 dashboardSection.style.display = 'block';
+            } else if (section === 'fees' && feesSection) {
+                feesSection.style.display = 'block';
             }
         });
     });
@@ -343,6 +380,8 @@ function loadStudents() {
 
     if (students.length === 0) {
         tableBody.innerHTML = '<tr id="emptyRow" class="empty-row"><td colspan="9">No students registered yet. Fill the form above to add a student.</td></tr>';
+        populateFeeStudentSelect();
+        loadFees();
         return;
     }
 
@@ -351,6 +390,8 @@ function loadStudents() {
         const row = createTableRow(student, index);
         tableBody.appendChild(row);
     });
+    populateFeeStudentSelect();
+    loadFees();
 }
 
 // ============================================
@@ -531,4 +572,250 @@ function getStudents() {
 
 function saveStudents(students) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(students));
+}
+
+// ============================================
+// Fees Management
+// ============================================
+
+function getFees() {
+    const data = localStorage.getItem(FEES_KEY);
+    return data ? JSON.parse(data) : [];
+}
+
+function saveFees(fees) {
+    localStorage.setItem(FEES_KEY, JSON.stringify(fees));
+}
+
+function formatKES(amount) {
+    const n = Number(amount || 0);
+    return `KES ${n.toFixed(2)}`;
+}
+
+function populateFeeStudentSelect() {
+    if (!feeStudent) return;
+    const students = getStudents();
+    feeStudent.innerHTML = '<option value="">-- Select Student --</option>';
+    students.forEach((s, idx) => {
+        const opt = document.createElement('option');
+        opt.value = s.registrationNumber;
+        opt.textContent = `${s.fullName} (${s.registrationNumber})`;
+        feeStudent.appendChild(opt);
+    });
+}
+
+function calculateTotalPayable() {
+    const tuition = parseFloat(tuitionInput?.value || 0);
+    const hostel = parseFloat(hostelInput?.value || 0);
+    const library = parseFloat(libraryInput?.value || 0);
+    const discount = parseFloat(discountInput?.value || 0);
+
+    let subtotal = tuition + hostel + library;
+    let discountAmount = (discount / 100) * subtotal;
+    let total = Math.max(0, subtotal - discountAmount);
+    if (totalPayable) totalPayable.textContent = formatKES(total);
+    return total;
+}
+
+function handleFeesSubmit(e) {
+    e.preventDefault();
+    const reg = feeStudent?.value || '';
+    if (!reg) {
+        if (document.getElementById('feeStudentError')) document.getElementById('feeStudentError').textContent = 'Please select a student';
+        return;
+    }
+    if (document.getElementById('feeStudentError')) document.getElementById('feeStudentError').textContent = '';
+
+    const students = getStudents();
+    const student = students.find(s => s.registrationNumber === reg);
+    if (!student) {
+        showFeesMessage('Selected student not found', 'error');
+        return;
+    }
+
+    const tuition = parseFloat(tuitionInput?.value || 0);
+    const hostel = parseFloat(hostelInput?.value || 0);
+    const library = parseFloat(libraryInput?.value || 0);
+    const discount = parseFloat(discountInput?.value || 0);
+    const total = calculateTotalPayable();
+
+    const fees = getFees();
+    const record = {
+        id: Date.now(),
+        studentReg: student.registrationNumber,
+        studentName: student.fullName,
+        tuition, hostel, library,
+        discountPercent: discount,
+        total,
+        paid: false,
+        date: new Date().toLocaleString()
+    };
+
+    fees.push(record);
+    saveFees(fees);
+
+    showFeesMessage('Fee recorded successfully', 'success');
+    feesForm.reset();
+    if (totalPayable) totalPayable.textContent = 'KES 0.00';
+    loadFees();
+}
+
+function loadFees() {
+    const fees = getFees();
+    if (!feesTableBody) return;
+    if (fees.length === 0) {
+        feesTableBody.innerHTML = '<tr class="empty-row"><td colspan="6">No fee records yet.</td></tr>';
+        return;
+    }
+
+    feesTableBody.innerHTML = '';
+    fees.forEach((f, i) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${f.studentName}</td>
+            <td>${f.studentReg}</td>
+            <td>${formatKES(f.total)}</td>
+            <td>${f.paid ? 'Yes' : 'No'}</td>
+            <td>${f.date}</td>
+            <td class="action-buttons">
+                <button class="btn-small btn-info" onclick="viewFeeInvoice(${f.id})">Invoice</button>
+                ${f.paid ? `<button class="btn-small btn-secondary" disabled>Paid</button>` : `<button class="btn-small btn-primary" onclick="markFeePaid(${f.id})">Mark Paid</button>`}
+                <button class="btn-small btn-delete" onclick="deleteFee(${f.id})">Delete</button>
+            </td>
+        `;
+        feesTableBody.appendChild(tr);
+    });
+}
+
+function markFeePaid(id) {
+    const fees = getFees();
+    const idx = fees.findIndex(f => f.id === id);
+    if (idx === -1) return;
+    fees[idx].paid = true;
+    saveFees(fees);
+    showFeesMessage('Marked fee as paid', 'success');
+    loadFees();
+}
+
+function viewFeeInvoice(id) {
+    const fees = getFees();
+    const rec = fees.find(f => f.id === id);
+    if (!rec) return;
+    openInvoicePreview(rec);
+}
+
+function openInvoicePreview(rec) {
+    if (!invoicePreviewContent || !invoiceModal) return;
+
+    // Build a structured, professional invoice
+    const invoiceHTML = `
+        <div class="invoice-header">
+            <div class="invoice-logo">
+                <img src="images/school logo.png" alt="Logo">
+                <div>
+                    <div style="font-weight:700;">Test Kiriri University</div>
+                    <div class="invoice-meta">123 Campus Road, Nairobi, Kenya</div>
+                    <div class="invoice-meta">Phone: +254 700 000000 | billing@wcu.ac.ke</div>
+                </div>
+            </div>
+            <div class="invoice-title">
+                <h2>Invoice</h2>
+                <div class="invoice-meta">Invoice #: ${rec.id}</div>
+                <div class="invoice-meta">Date: ${rec.date}</div>
+                <div class="invoice-meta">Student Reg: ${rec.studentReg}</div>
+            </div>
+        </div>
+
+        <div class="invoice-body">
+            <div><strong>Billed To:</strong></div>
+            <div>${rec.studentName}</div>
+            <div class="invoice-meta">Course / Program: ${getStudentCourse(rec.studentReg) || 'N/A'}</div>
+
+            <table class="invoice-table">
+                <thead>
+                    <tr><th>Description</th><th>Amount (KES)</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Tuition</td><td style="text-align:right">${formatKES(rec.tuition)}</td></tr>
+                    <tr><td>Hostel</td><td style="text-align:right">${formatKES(rec.hostel)}</td></tr>
+                    <tr><td>Library / Misc</td><td style="text-align:right">${formatKES(rec.library)}</td></tr>
+                    <tr><td>Discount (${rec.discountPercent}%)</td><td style="text-align:right">-${formatKES(((rec.discountPercent/100)*(rec.tuition+rec.hostel+rec.library)))}</td></tr>
+                </tbody>
+            </table>
+
+            <div class="invoice-summary">
+                <div class="summary-box">
+                    <div class="summary-row"><div>Subtotal:</div><div>${formatKES(rec.tuition+rec.hostel+rec.library)}</div></div>
+                    <div class="summary-row"><div>Discount:</div><div>-${formatKES(((rec.discountPercent/100)*(rec.tuition+rec.hostel+rec.library)))}</div></div>
+                    <div style="border-top:1px dashed #e6e6e6;margin-top:8px"></div>
+                    <div class="summary-row" style="font-weight:700;font-size:1.1rem;"><div>Total Payable:</div><div>${formatKES(rec.total)}</div></div>
+                    <div class="summary-row"><div>Status:</div><div>${rec.paid ? 'Paid' : 'Unpaid'}</div></div>
+                </div>
+            </div>
+
+            <div class="invoice-footer">
+                <div>Notes:</div>
+                <div>Please settle fees within 30 days. For questions contact billing@wcu.ac.ke.</div>
+            </div>
+        </div>
+    `;
+
+    invoicePreviewContent.innerHTML = invoiceHTML;
+    invoiceModal.classList.add('show');
+}
+
+function closeInvoiceModal() {
+    if (!invoiceModal) return;
+    invoiceModal.classList.remove('show');
+    if (invoicePreviewContent) invoicePreviewContent.innerHTML = '';
+}
+
+function downloadInvoiceFromPreview() {
+    if (!invoicePreviewContent) return;
+    // generate PDF from the preview content
+    html2canvas(invoicePreviewContent, {scale:2}).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new window.jspdf.jsPDF('p', 'pt', 'a4');
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+        pdf.addImage(imgData, 'PNG', 0, 20, pdfWidth, pdfHeight);
+        const now = Date.now();
+        pdf.save(`invoice-${now}.pdf`);
+    }).catch(err => {
+        console.error('PDF generation error', err);
+        showFeesMessage('Could not generate PDF from preview.', 'error');
+    });
+}
+
+function printInvoicePreview() {
+    if (!invoicePreviewContent) return;
+    const printWindow = window.open('', '_blank');
+    const html = `<!doctype html><html><head><title>Print Invoice</title><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{font-family:Arial, sans-serif;padding:20px;color:#222}</style></head><body>${invoicePreviewContent.innerHTML}</body></html>`;
+    printWindow.document.write(html);
+    printWindow.document.close();
+    printWindow.focus();
+    setTimeout(() => { printWindow.print(); printWindow.close(); }, 500);
+}
+
+function getStudentCourse(reg) {
+    const students = getStudents();
+    const s = students.find(x => x.registrationNumber === reg);
+    return s ? s.course : '';
+}
+
+function deleteFee(id) {
+    let fees = getFees();
+    fees = fees.filter(f => f.id !== id);
+    saveFees(fees);
+    showFeesMessage('Fee record deleted', 'warning');
+    loadFees();
+}
+
+function showFeesMessage(message, type) {
+    if (!feesMessage) return;
+    feesMessage.innerHTML = `<div class="message ${type}">${message}<span class="close-message" onclick="this.parentElement.remove()">&times;</span></div>`;
+    setTimeout(() => {
+        const el = feesMessage.querySelector('.message');
+        if (el) el.remove();
+    }, 5000);
 }

@@ -70,6 +70,7 @@
                     <ul>
                         <li><a href="#registration" class="nav-link active" data-section="registration">Register Student</a></li>
                         <li><a href="#dashboard" class="nav-link" data-section="dashboard">View Students</a></li>
+                        <li><a href="#fees" class="nav-link" data-section="fees">Fees</a></li>
                     </ul>
                 </nav>
             </aside>
@@ -234,6 +235,74 @@
                     </table>
                 </div>
             </section>
+            
+            <!-- Fees Section -->
+            <section id="fees" class="form-section" style="display: none;">
+                <h2>Fees Management</h2>
+
+                <div id="feesMessage" class="message-container"></div>
+
+                <form id="feesForm" class="registration-form">
+                    <div class="form-group">
+                        <label for="feeStudent">Student <span class="required">*</span></label>
+                        <select id="feeStudent" required>
+                            <option value="">-- Select Student --</option>
+                        </select>
+                        <span class="error-message" id="feeStudentError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tuition">Tuition Fee</label>
+                        <input type="number" id="tuition" value="0" min="0" step="0.01">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="hostel">Hostel Fee</label>
+                        <input type="number" id="hostel" value="0" min="0" step="0.01">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="library">Library / Misc</label>
+                        <input type="number" id="library" value="0" min="0" step="0.01">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="discount">Discount / Scholarship (%)</label>
+                        <input type="number" id="discount" value="0" min="0" max="100" step="0.01">
+                    </div>
+
+                        <div class="form-group">
+                            <label>Total Payable</label>
+                            <div id="totalPayable" style="font-weight:700;font-size:1.1rem;">KES 0.00</div>
+                        </div>
+
+                    <div class="form-buttons">
+                        <button type="submit" class="btn btn-primary">Record Fee</button>
+                        <button type="reset" class="btn btn-secondary">Clear</button>
+                    </div>
+                </form>
+
+                <hr style="margin:20px 0;">
+
+                <h3>Recorded Fees</h3>
+                <div class="table-responsive">
+                    <table id="feesTable" class="students-table">
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Reg #</th>
+                                <th>Amount</th>
+                                <th>Paid</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="feesTableBody">
+                            <tr class="empty-row"><td colspan="6">No fee records yet.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
             </main>
         </div>
     </div>
@@ -377,7 +446,25 @@
         </div>
     </div>
 
+    <!-- Invoice Preview Modal -->
+    <div id="invoiceModal" class="modal">
+        <div class="modal-content invoice-modal-content">
+            <button id="closeInvoicePreviewBtn" class="close">&times;</button>
+            <div id="invoicePreviewContent" class="invoice-preview">
+                <!-- Invoice HTML injected here -->
+            </div>
+            <div class="form-buttons" style="margin-top:16px;">
+                <button id="downloadInvoiceBtn" class="btn btn-primary">Download PDF</button>
+                <button id="printInvoiceBtn" class="btn btn-secondary">Print</button>
+                <button id="closeInvoiceBtn" class="btn btn-danger">Close</button>
+            </div>
+        </div>
+    </div>
+
     <!-- JavaScript File -->
+    <!-- html2canvas + jsPDF for invoice PDF download -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

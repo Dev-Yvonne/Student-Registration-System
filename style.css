@@ -799,6 +799,82 @@ body {
         font-size: 3rem;
     }
 
+/* ============================================
+   Fees Specific Styles
+   ============================================ */
+
+#totalPayable {
+    padding: 10px 12px;
+    border: 2px solid var(--border-color);
+    border-radius: 6px;
+    background: #fff;
+}
+
+#feesForm .form-group input[type="number"] {
+    max-width: 320px;
+}
+
+/* ============================================
+   Invoice Preview Styles
+   ============================================ */
+
+.invoice-modal-content {
+    max-width: 900px;
+    width: 95%;
+}
+
+.invoice-preview {
+    background: #ffffff;
+    padding: 22px;
+    border-radius: 8px;
+    color: #222;
+}
+
+.invoice-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.invoice-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.invoice-logo img {
+    height: 64px;
+    width: 64px;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+.invoice-title {
+    text-align: right;
+}
+
+.invoice-title h2 { margin: 0; font-size: 1.4rem; }
+.invoice-meta { font-size: 0.9rem; color: #555; }
+
+.invoice-body { margin-top: 12px; }
+.invoice-table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+.invoice-table th, .invoice-table td { border: 1px solid #e6e6e6; padding: 10px; }
+.invoice-table th { background: #f7f7f7; text-align: left; }
+
+.invoice-summary { margin-top: 12px; display:flex; justify-content:flex-end; }
+.invoice-summary .summary-box { width: 320px; border: 1px solid #e6e6e6; padding: 12px; border-radius: 6px; }
+.invoice-summary .summary-row { display:flex; justify-content:space-between; padding:6px 0; }
+
+.invoice-footer { margin-top: 18px; font-size: 0.9rem; color: #555; }
+
+@media (max-width: 600px) {
+    .invoice-header { flex-direction: column; align-items: flex-start; }
+    .invoice-title { text-align: left; width: 100%; }
+    .invoice-summary { justify-content: flex-start; }
+}
+
     .header p {
         font-size: 1.2rem;
     }

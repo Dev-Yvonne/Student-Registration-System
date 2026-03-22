@@ -9,14 +9,16 @@
 <body>
     <!-- Login Container -->
     <div id="loginContainer" class="login-container">
-        <div class="login-box">
-            <div class="login-icon">
-                <img src="images/student icon.png" alt="Student Icon" class="login-student-icon">
-            </div>
-            <h1>Student Registration System</h1>
-            <p>Admin Login</p>
-            
-            <form id="loginForm" class="login-form">
+        <div class="login-split">
+            <div class="login-left">
+                <div class="login-box">
+                    <div class="login-icon">
+                        <img src="images/student icon.png" alt="Student Icon" class="login-student-icon">
+                    </div>
+                    <h1>Student Registration System</h1>
+                    <p>Admin Login</p>
+                    
+                    <form id="loginForm" class="login-form">
                 <div class="form-group">
                     <label for="username">Email</label>
                     <input 
@@ -44,7 +46,18 @@
                 <div id="loginMessage" class="message-container"></div>
 
                 <button type="submit" class="btn btn-primary btn-login">Sign In</button>
-            </form>
+                    </form>
+                </div>
+            </div>
+
+            <div class="login-right" aria-hidden="true">
+                <figure class="admin-frame" aria-hidden="false">
+                    <div class="admin-media">
+                        <img src="images/admin.png" alt="Admin" class="admin-image">
+                    </div>
+                    <figcaption class="admin-caption">Administrator</figcaption>
+                </figure>
+            </div>
         </div>
     </div>
 

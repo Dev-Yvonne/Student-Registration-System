@@ -43,6 +43,10 @@ const downloadInvoiceBtn = document.getElementById('downloadInvoiceBtn');
 const printInvoiceBtn = document.getElementById('printInvoiceBtn');
 const closeInvoicePreviewBtn = document.getElementById('closeInvoicePreviewBtn');
 const closeInvoiceBtn = document.getElementById('closeInvoiceBtn');
+// Sidebar toggle (mobile)
+const sidebarToggle = document.getElementById('sidebarToggle');
+const bodyEl = document.body;
+let sidebarBackdrop = null;
 
 // Global variable to store the index of student being edited/deleted
 let currentEditIndex = null;
@@ -170,6 +174,14 @@ function setupEventListeners() {
     if (printInvoiceBtn) printInvoiceBtn.addEventListener('click', printInvoicePreview);
     if (closeInvoicePreviewBtn) closeInvoicePreviewBtn.addEventListener('click', closeInvoiceModal);
     if (closeInvoiceBtn) closeInvoiceBtn.addEventListener('click', closeInvoiceModal);
+
+    // Sidebar toggle
+    if (sidebarToggle) {
+        sidebarToggle.addEventListener('click', function() {
+            const isOpen = bodyEl.classList.toggle('sidebar-open');
+            if (isOpen) showSidebarBackdrop(); else removeSidebarBackdrop();
+        });
+    }
 
     // Close modal when clicking outside
     window.addEventListener('click', function(event) {
@@ -768,6 +780,29 @@ function closeInvoiceModal() {
     if (!invoiceModal) return;
     invoiceModal.classList.remove('show');
     if (invoicePreviewContent) invoicePreviewContent.innerHTML = '';
+}
+
+function showSidebarBackdrop() {
+    if (sidebarBackdrop) return;
+    sidebarBackdrop = document.createElement('div');
+    sidebarBackdrop.style.position = 'fixed';
+    sidebarBackdrop.style.left = '0';
+    sidebarBackdrop.style.top = '0';
+    sidebarBackdrop.style.width = '100%';
+    sidebarBackdrop.style.height = '100%';
+    sidebarBackdrop.style.background = 'rgba(0,0,0,0.35)';
+    sidebarBackdrop.style.zIndex = '1100';
+    sidebarBackdrop.addEventListener('click', function() {
+        bodyEl.classList.remove('sidebar-open');
+        removeSidebarBackdrop();
+    });
+    document.body.appendChild(sidebarBackdrop);
+}
+
+function removeSidebarBackdrop() {
+    if (!sidebarBackdrop) return;
+    sidebarBackdrop.remove();
+    sidebarBackdrop = null;
 }
 
 function downloadInvoiceFromPreview() {

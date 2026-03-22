@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Registration System</title>
+    <!-- Inter font for a modern, professional UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -53,12 +55,24 @@
         <!-- Header Section -->
         <header class="header">
             <div class="header-content">
+                <button id="sidebarToggle" class="btn btn-sm" aria-label="Toggle navigation" style="margin-right:12px;display:none">☰</button>
                 <img src="images/student icon.png" alt="Student Icon" class="header-icon">
                 <div class="header-text">
                     <h1>Student Registration System</h1>
                     <p>Admin Dashboard</p>
                 </div>
-                <button id="logoutBtn" class="btn btn-danger btn-logout">Logout</button>
+                <div class="header-actions">
+                    <nav class="top-nav" role="navigation" aria-label="Main">
+                        <a href="#registration" class="nav-link" data-section="registration">Register Student</a>
+                        <a href="#dashboard" class="nav-link" data-section="dashboard">View Students</a>
+                        <a href="#fees" class="nav-link" data-section="fees">Fees</a>
+                    </nav>
+                    <input id="headerSearch" class="header-search" type="search" placeholder="Search students, reg# or email" aria-label="Search">
+                    <div class="avatar" title="Admin">
+                        <img src="images/student icon.png" alt="Admin avatar">
+                    </div>
+                    <button id="logoutBtn" class="btn btn-danger btn-logout">Logout</button>
+                </div>
             </div>
         </header>
 

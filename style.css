@@ -71,11 +71,9 @@ body {
 
 .login-container {
     display: flex;
-    align-items: center;
-    justify-content: center;
     min-height: 100vh;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    padding: 20px;
+    background: var(--light-bg);
+    padding: 0;
 }
 
 .login-box {
@@ -84,8 +82,80 @@ body {
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
     padding: 50px;
     width: 100%;
-    max-width: 400px;
-    text-align: center;
+    max-width: 480px;
+    text-align: left;
+}
+
+/* Split layout for login page */
+.login-split {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+}
+
+.login-left {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 28px;
+}
+
+.login-right {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 40px 28px;
+    background: linear-gradient(180deg, #f8fafc, #ffffff);
+}
+
+.admin-frame {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 18px;
+    max-width: 520px;
+    width: 100%;
+    box-shadow: 0 8px 30px rgba(15,23,36,0.08);
+    border: 1px solid rgba(15,23,36,0.06);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.admin-media {
+    width: 380px;
+    height: 380px;
+    overflow: hidden;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, #fff, #fbfcff);
+}
+
+.admin-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 8px;
+}
+
+.admin-caption {
+    font-weight: 600;
+    color: var(--dark-text);
+    font-size: 1.05rem;
+    opacity: 0.9;
+}
+
+@media (max-width: 900px) {
+    .login-split { flex-direction: column; }
+    .login-right { display: none; }
+    .login-left { padding: 20px; }
+    .login-box { text-align: center; }
 }
 
 .login-icon {

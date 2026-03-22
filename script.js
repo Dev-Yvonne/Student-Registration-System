@@ -5,7 +5,7 @@
 // Key for localStorage
 const STORAGE_KEY = 'students_data';
 const FEES_KEY = 'fees_data';
-const ADMIN_EMAIL = 'eshitemiyvonne@gmail.com';
+const ADMIN_EMAIL = 'adminkiriritest@edu.com';
 const ADMIN_PASSWORD = 'Admin@2026';
 const AUTH_KEY = 'admin_authenticated';
 

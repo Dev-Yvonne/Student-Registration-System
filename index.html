@@ -68,7 +68,7 @@
         <!-- Header Section -->
         <header class="header">
             <div class="header-content">
-                <button id="sidebarToggle" class="btn btn-sm" aria-label="Toggle navigation" style="margin-right:12px;display:none">☰</button>
+                <button id="sidebarToggle" class="btn btn-sm" aria-label="Toggle navigation" aria-expanded="false" aria-controls="sidebar">☰</button>
                 <img src="images/student icon.png" alt="Student Icon" class="header-icon">
                 <div class="header-text">
                     <h1>Student Registration System</h1>
@@ -80,11 +80,6 @@
                         <a href="#dashboard" class="nav-link" data-section="dashboard">View Students</a>
                         <a href="#fees" class="nav-link" data-section="fees">Fees</a>
                     </nav>
-                    <input id="headerSearch" class="header-search" type="search" placeholder="Search students, reg# or email" aria-label="Search">
-                    <div class="avatar" title="Admin">
-                        <img src="images/student icon.png" alt="Admin avatar">
-                    </div>
-                    <button id="logoutBtn" class="btn btn-danger btn-logout">Logout</button>
                 </div>
             </div>
         </header>
@@ -92,12 +87,13 @@
         <!-- Dashboard Layout -->
         <div class="dashboard-layout">
             <!-- Sidebar Navigation -->
-            <aside class="sidebar">
+            <aside id="sidebar" class="sidebar" role="complementary" aria-label="Sidebar" aria-hidden="true">
                 <nav class="sidebar-nav">
                     <ul>
                         <li><a href="#registration" class="nav-link active" data-section="registration">Register Student</a></li>
                         <li><a href="#dashboard" class="nav-link" data-section="dashboard">View Students</a></li>
                         <li><a href="#fees" class="nav-link" data-section="fees">Fees</a></li>
+                        <li><button id="logoutBtn" class="nav-link logout-link" type="button">Logout</button></li>
                     </ul>
                 </nav>
             </aside>

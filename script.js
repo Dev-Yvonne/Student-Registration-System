@@ -177,9 +177,35 @@ function setupEventListeners() {
 
     // Sidebar toggle
     if (sidebarToggle) {
+        // ensure aria attributes
+        sidebarToggle.setAttribute('aria-expanded', sidebarToggle.getAttribute('aria-expanded') || 'false');
+        sidebarToggle.setAttribute('aria-controls', sidebarToggle.getAttribute('aria-controls') || 'sidebar');
         sidebarToggle.addEventListener('click', function() {
             const isOpen = bodyEl.classList.toggle('sidebar-open');
-            if (isOpen) showSidebarBackdrop(); else removeSidebarBackdrop();
+            const sidebarEl = document.getElementById('sidebar');
+            if (isOpen) {
+                showSidebarBackdrop();
+                sidebarToggle.setAttribute('aria-expanded', 'true');
+                if (sidebarEl) sidebarEl.setAttribute('aria-hidden', 'false');
+                // focus first nav link for keyboard users
+                const firstLink = sidebarEl ? sidebarEl.querySelector('.nav-link') : null;
+                if (firstLink) firstLink.focus();
+            } else {
+                removeSidebarBackdrop();
+                sidebarToggle.setAttribute('aria-expanded', 'false');
+                if (sidebarEl) sidebarEl.setAttribute('aria-hidden', 'true');
+            }
+        });
+        // close sidebar on Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && document.body.classList.contains('sidebar-open')) {
+                document.body.classList.remove('sidebar-open');
+                removeSidebarBackdrop();
+                sidebarToggle.setAttribute('aria-expanded', 'false');
+                const sidebarEl = document.getElementById('sidebar');
+                if (sidebarEl) sidebarEl.setAttribute('aria-hidden', 'true');
+                sidebarToggle.focus();
+            }
         });
     }
 
@@ -854,3 +880,7 @@ function showFeesMessage(message, type) {
         if (el) el.remove();
     }, 5000);
 }
+
+// ============================================
+// Accessibility: Contrast Ratio Audit + small ARIA checks
+// Adds a floating report panel and logs issues to console (removed)

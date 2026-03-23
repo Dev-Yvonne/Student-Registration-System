@@ -273,22 +273,105 @@ body {
 .nav-link {
     display: block;
     padding: 15px 25px;
-    color: var(--white);
+    color: var(--accent-color);
     text-decoration: none;
     transition: var(--transition);
     border-left: 4px solid transparent;
     font-weight: 500;
 }
 
+/* Make .nav-link safe to use on <button> elements (reset default button styles) */
+.nav-link[role="button"], .nav-link.logout-link, .nav-link button, .nav-link[type="button"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: none;
+    background: transparent;
+    width: 100%;
+    text-align: left;
+    padding: 15px 25px;
+}
+
+/* Sidebar layout: make nav take available space and footer stick to bottom */
+.sidebar {
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-nav {
+    flex: 1 1 auto;
+}
+
+.sidebar-footer {
+    padding: 12px 18px;
+    border-top: 1px solid rgba(255,255,255,0.04);
+}
+
+/* Logout button style in sidebar footer */
+.logout-link {
+    display: block;
+    width: 100%;
+    padding: 10px 14px;
+    background: transparent;
+    color: var(--danger-color);
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 700;
+    border: 2px solid var(--danger-color);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.logout-link:hover,
+.logout-link:focus {
+    background: var(--danger-color);
+    color: var(--accent-color);
+    outline: none;
+}
+
+.logout-link:focus {
+    box-shadow: 0 0 0 4px rgba(220,53,69,0.12);
+}
+
+/* On larger screens, show logout as filled red for prominence */
+@media (min-width: 768px) {
+    .sidebar .sidebar-footer .logout-link {
+        background: var(--danger-color);
+        color: var(--accent-color);
+        border-color: var(--danger-color);
+    }
+    .sidebar .sidebar-footer .logout-link:hover,
+    .sidebar .sidebar-footer .logout-link:focus {
+        background: #b02a37;
+        color: var(--accent-color);
+    }
+}
+
 .nav-link:hover {
-    background: rgba(248,250,245,0.04);
-    border-left-color: var(--accent-color);
+    background: rgba(255,255,255,0.06);
+    border-left-color: rgba(255,255,255,0.12);
+    color: var(--accent-color);
 }
 
 .nav-link.active {
-    background: var(--surface);
-    border-left-color: var(--accent-color);
+    background: var(--accent-color);
+    border-left-color: rgba(255,255,255,0.18);
     color: var(--primary-color);
+    font-weight: 700;
+}
+
+/* Improve visibility and keyboard focus for sidebar links */
+.sidebar .nav-link:focus {
+    outline: none;
+    box-shadow: inset 0 0 0 9999px rgba(255,255,255,0.03), 0 0 0 3px rgba(255,255,255,0.12);
+}
+
+/* Larger tap targets on mobile */
+@media (max-width: 767px) {
+    .sidebar .nav-link {
+        padding: 16px 18px;
+        font-size: 1rem;
+    }
 }
 
 /* ============================================
@@ -309,11 +392,22 @@ body {
     gap: 20px;
 }
 
+    /* Sidebar toggle: hidden by default, shown on small screens via media query */
+    #sidebarToggle {
+        display: none;
+        margin-right: 12px;
+    }
+
 .header-actions {
     display: flex;
     align-items: center;
     gap: 12px;
     margin-left: auto;
+}
+
+/* Remove horizontal top navigation everywhere (use sidebar only) */
+.top-nav {
+    display: none !important;
 }
 
 .top-nav {
@@ -341,14 +435,7 @@ body {
     color: var(--primary-color);
 }
 
-.header-search {
-    padding: 8px 12px;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    width: 220px;
-}
 
-.avatar img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
 
 .header-icon {
     width: 80px;
@@ -949,6 +1036,59 @@ body {
     background: var(--surface);
 }
 
+/* On small screens, hide the horizontal top navigation so navigation is only in the sidebar */
+@media (max-width: 767px) {
+    .top-nav {
+        display: none !important;
+    }
+}
+
+    /* Sidebar link colors on small screens: navy text on light surface */
+    .sidebar {
+        background: var(--surface);
+        color: var(--text);
+    }
+
+    /* Make sidebar nav links prominent on mobile: navy background, off-white text */
+    .sidebar .nav-link {
+        display: block;
+        width: 100%;
+        padding: 12px 16px;
+        margin-bottom: 8px;
+        background: var(--primary-color);
+        color: var(--accent-color) !important;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        border-left: none;
+    }
+
+    .sidebar .nav-link:hover,
+    .sidebar .nav-link:focus {
+        background: #09203a; /* slightly darker navy */
+        color: var(--accent-color) !important;
+    }
+
+    .sidebar .nav-link.active {
+        background: var(--primary-color);
+        color: var(--accent-color) !important;
+        font-weight: 700;
+    }
+
+    /* Ensure all sidebar nav links display navy text on mobile, including active state (use a subtle active background) */
+    .sidebar .nav-link,
+    .sidebar .nav-link:visited,
+    .sidebar .nav-link.active {
+        color: var(--primary-color) !important;
+        background: transparent !important;
+    }
+
+    .sidebar .nav-link.active {
+        background: rgba(11,37,69,0.06) !important;
+        color: var(--primary-color) !important;
+        font-weight: 700;
+    }
+
 #feesForm .form-group input[type="number"] {
     max-width: 320px;
 }
@@ -1095,6 +1235,67 @@ body {
     .header p {
         font-size: 0.95rem;
     }
+
+    /* Improved small-screen header layout */
+    .header {
+        padding: 14px 12px;
+    }
+
+    .header-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        width: 100%;
+    }
+
+    .header-text {
+        flex: 1 1 auto;
+        margin-left: 8px;
+    }
+
+    .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-left: 0;
+    }
+
+    .header-search {
+        width: 100%;
+        max-width: 100%;
+        order: 3;
+        margin-top: 8px;
+    }
+
+    .header-icon { width: 56px; height:56px; }
+
+    /* Ensure main content stacks nicely */
+    .main-content { padding: 18px; gap: 20px; }
+
+    /* Modals / invoice should use most of the viewport on small screens */
+    .modal-content {
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 0;
+        padding: 16px;
+        box-sizing: border-box;
+    }
+
+    .invoice-modal-content { padding: 12px; }
+
+    .invoice-preview { padding: 12px; }
+
+    /* Tables -> card view already applied; ensure action buttons are full width */
+    .students-table tbody td { flex-direction: row; align-items: center; }
+    .action-buttons { width: 100%; display: flex; gap: 8px; }
+    .action-buttons .btn-small { width: 100%; }
+
+    /* Make sidebar overlay cover and be easily tappable */
+    .sidebar { padding-top: 56px; }
+    body.sidebar-open { overflow: hidden; }
 
     .form-section h2,
     .table-section h2 {

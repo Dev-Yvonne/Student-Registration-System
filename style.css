@@ -173,7 +173,6 @@ body {
     height: 80px;
     object-fit: contain;
     border-radius: 50%;
-    animation: float 3s ease-in-out infinite;
 }
 
 .login-box h1 {
@@ -442,18 +441,10 @@ body {
     height: 80px;
     object-fit: contain;
     filter: brightness(1.1);
-    animation: float 3s ease-in-out infinite;
     border-radius: 50%;
 }
 
-@keyframes float {
-    0%, 100% {
-        transform: translateY(0px);
-    }
-    50% {
-        transform: translateY(-10px);
-    }
-}
+
 
 .header-text {
     flex: 1;

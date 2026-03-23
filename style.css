@@ -333,6 +333,20 @@ body {
     box-shadow: 0 0 0 4px rgba(220,53,69,0.12);
 }
 
+/* On larger screens, show logout as filled red for prominence */
+@media (min-width: 768px) {
+    .sidebar .sidebar-footer .logout-link {
+        background: var(--danger-color);
+        color: var(--accent-color);
+        border-color: var(--danger-color);
+    }
+    .sidebar .sidebar-footer .logout-link:hover,
+    .sidebar .sidebar-footer .logout-link:focus {
+        background: #b02a37;
+        color: var(--accent-color);
+    }
+}
+
 .nav-link:hover {
     background: rgba(255,255,255,0.06);
     border-left-color: rgba(255,255,255,0.12);
@@ -421,14 +435,7 @@ body {
     color: var(--primary-color);
 }
 
-.header-search {
-    padding: 8px 12px;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    width: 220px;
-}
 
-.avatar img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
 
 .header-icon {
     width: 80px;
@@ -1042,20 +1049,44 @@ body {
         color: var(--text);
     }
 
+    /* Make sidebar nav links prominent on mobile: navy background, off-white text */
     .sidebar .nav-link {
-        color: var(--primary-color);
-        background: transparent;
+        display: block;
+        width: 100%;
+        padding: 12px 16px;
+        margin-bottom: 8px;
+        background: var(--primary-color);
+        color: var(--accent-color) !important;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        border-left: none;
     }
 
-    .sidebar .nav-link:hover {
-        background: rgba(11,37,69,0.06);
-        color: var(--primary-color);
+    .sidebar .nav-link:hover,
+    .sidebar .nav-link:focus {
+        background: #09203a; /* slightly darker navy */
+        color: var(--accent-color) !important;
     }
 
     .sidebar .nav-link.active {
         background: var(--primary-color);
-        color: var(--accent-color);
-        border-left-color: transparent;
+        color: var(--accent-color) !important;
+        font-weight: 700;
+    }
+
+    /* Ensure all sidebar nav links display navy text on mobile, including active state (use a subtle active background) */
+    .sidebar .nav-link,
+    .sidebar .nav-link:visited,
+    .sidebar .nav-link.active {
+        color: var(--primary-color) !important;
+        background: transparent !important;
+    }
+
+    .sidebar .nav-link.active {
+        background: rgba(11,37,69,0.06) !important;
+        color: var(--primary-color) !important;
+        font-weight: 700;
     }
 
 #feesForm .form-group input[type="number"] {

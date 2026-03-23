@@ -292,6 +292,47 @@ body {
     padding: 15px 25px;
 }
 
+/* Sidebar layout: make nav take available space and footer stick to bottom */
+.sidebar {
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-nav {
+    flex: 1 1 auto;
+}
+
+.sidebar-footer {
+    padding: 12px 18px;
+    border-top: 1px solid rgba(255,255,255,0.04);
+}
+
+/* Logout button style in sidebar footer */
+.logout-link {
+    display: block;
+    width: 100%;
+    padding: 10px 14px;
+    background: transparent;
+    color: var(--danger-color);
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 700;
+    border: 2px solid var(--danger-color);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.logout-link:hover,
+.logout-link:focus {
+    background: var(--danger-color);
+    color: var(--accent-color);
+    outline: none;
+}
+
+.logout-link:focus {
+    box-shadow: 0 0 0 4px rgba(220,53,69,0.12);
+}
+
 .nav-link:hover {
     background: rgba(255,255,255,0.06);
     border-left-color: rgba(255,255,255,0.12);
